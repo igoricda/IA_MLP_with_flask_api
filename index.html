@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dinosaur Diet Predictor</title>
+    <style>
+        /* Basic styling for readability */
+        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2em; }
+        label { display: block; margin-top: 1em; }
+        input, select { width: 100%; padding: 8px; margin-top: 4px; }
+        button { width: 100%; padding: 10px; margin-top: 1.5em; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        #result { margin-top: 2em; font-size: 1.2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🦖 Preditor de Dieta de Dinossauro</h1>
+    <form id="dinoForm">
+        <label for="length_m">Comprimento (m):</label>
+        <input type="number" id="length_m" value="12.0" step="0.1" required>
+
+        <label for="weight_kg">Peso (kg):</label>
+        <input type="number" id="weight_kg" value="7000.0" step="10" required>
+
+        <label for="height_m">Altura (m):</label>
+        <input type="number" id="height_m" value="5.0" step="0.1" required>
+
+        <label for="locomotion">Locomoção:</label>
+        <select id="locomotion">
+            <option value="Bipedal">Bípede</option>
+            <option value="Quadrupedal">Quadrúpede</option>
+        </select>
+        
+        <label for="geological_period">Período Geológico:</label>
+        <select id="geological_period">
+            <option value="Cretaceous">Cretáceo</option>
+            <option value="Jurassic">Jurássico</option>
+            <option value="Triassic">Triássico</option>
+        </select>
+        
+        <label for="lived_in">Viveu em:</label>
+        <select id="lived_in">
+            <option value="North America">América do Norte</option>
+            <option value="South America">América do Sul</option>
+            <option value="Europe">Europa</option>
+            <option value="Asia">Ásia</option>
+            <option value="Africa">África</option>
+        </select>
+
+        <button type="submit">Prever Dieta</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('dinoForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const data = {
+                "length_m": parseFloat(document.getElementById('length_m').value),
+                "weight_kg": parseFloat(document.getElementById('weight_kg').value),
+                "height_m": parseFloat(document.getElementById('height_m').value),
+                "locomotion": document.getElementById('locomotion').value,
+                "geological_period": document.getElementById('geological_period').value,
+                "lived_in": document.getElementById('lived_in').value
+            };
+
+            const response = await fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            
+            if (result.predicted_diet === "Carnivore") {
+                var resultado = "Carnívoro";
+                document.getElementById('result').style.color = "red";
+            
+            } else if (result.predicted_diet === "Herbivore") {
+                var resultado = "Herbívoro";
+                document.getElementById('result').style.color = "green";
+            } else {
+                document.getElementById('result').style.color = "blue"; // Light blue for Omnivore
+                var resultado = "Onívoro";
+            }
+            const maxConfidence = Math.max(...result.confidence);
+            const confidencePercent = (maxConfidence * 100).toFixed(2);
+            document.getElementById('result').innerText = `Dieta Predita: ${resultado} (Confiança: ${confidencePercent}%)`;
+        });
+    </script>
+</body>
+</html>
