@@ -19,7 +19,7 @@
         <input type="number" id="length_m" value="12.0" step="0.1" required>
 
         <label for="weight_kg">Peso (kg):</label>
-        <input type="number" id="weight_kg" value="7000.0" step="10" required>
+        <input type="number" id="weight_kg" value="7000.0" step="0.1" required>
 
         <label for="height_m">Altura (m):</label>
         <input type="number" id="height_m" value="5.0" step="0.1" required>
@@ -44,6 +44,8 @@
             <option value="Europe">Europa</option>
             <option value="Asia">Ásia</option>
             <option value="Africa">África</option>
+            <option value="Australia">Australia</option>
+            <option value="Antarctica">Antártica</option>
         </select>
 
         <button type="submit">Prever Dieta</button>
@@ -63,7 +65,7 @@
                 "lived_in": document.getElementById('lived_in').value
             };
 
-            const response = await fetch('/predict', {
+            const response = await fetch('http://127.0.0.1:5000/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
