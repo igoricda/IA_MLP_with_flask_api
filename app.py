@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import pandas as pd
 import numpy as np
@@ -8,13 +8,13 @@ from tensorflow.keras.models import load_model
 app = Flask(__name__)
 CORS(app)
 
-model = load_model("modelo_dieta_dinossauros.h5")
-preprocessor = joblib.load("dino_preprocessor.joblib")
-label_encoder = joblib.load("dino_label_encoder.joblib")
+model = load_model("mlp/modelo_dieta_dinossauros.h5")
+preprocessor = joblib.load("mlp/dino_preprocessor.joblib")
+label_encoder = joblib.load("mlp/dino_label_encoder.joblib")
 
 @app.route("/")
 def home():
-    return "API de predição de dieta de dinossauros"
+    return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -39,4 +39,4 @@ def predict():
     return jsonify(response)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=False, port=5000)
