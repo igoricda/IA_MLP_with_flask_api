@@ -74,15 +74,15 @@
             const result = await response.json();
             
             if (result.predicted_diet === "Carnivore") {
-                var resultado = "Carnívoro";
+                var resultado = "Carnívoro 🥩";
                 document.getElementById('result').style.color = "red";
             
             } else if (result.predicted_diet === "Herbivore") {
-                var resultado = "Herbívoro";
+                var resultado = "Herbívoro 🌿";
                 document.getElementById('result').style.color = "green";
             } else {
                 document.getElementById('result').style.color = "blue"; // Light blue for Omnivore
-                var resultado = "Onívoro";
+                var resultado = "Onívoro 🍖🌱";
             }
             const maxConfidence = Math.max(...result.confidence);
             const confidencePercent = (maxConfidence * 100).toFixed(2);
