@@ -25,9 +25,8 @@ pd.set_option('display.max_columns', None)
 # Ajusta a largura da exibição para evitar quebras de linha indesejadas
 pd.set_option('display.width', None)
 
-# ======================
-# 1. Carregar o dataset
-# ======================
+
+# Carregar o dataset
 data = pd.read_csv("./dinoDatasetCSV.csv")
 
 # Seleção de features e alvo
@@ -41,9 +40,8 @@ data = data.dropna(subset=features + [target])
 X = data[features]
 y = data[target]
 
-# ======================
-# 2. Pré-processamento
-# ======================
+
+# Pré-processamento
 num_features = ["length_m", "weight_kg", "height_m"]
 cat_features = ["locomotion", "geological_period", "lived_in"]
 
@@ -74,9 +72,8 @@ X_train, X_test, y_train, y_test = train_test_split(
     X_processed, y_encoded, test_size=0.2, random_state=42
 )
 
-# ======================
-# 3. Construção da MLP
-# ======================
+
+# Construção da MLP
 model = Sequential([
     Dense(128, activation="relu", input_shape=(X_train.shape[1],)),
     Dropout(0.3),
@@ -93,9 +90,8 @@ model.compile(
 
 model.summary()
 
-# ======================
-# 4. Treinamento
-# ======================
+
+# Treinamento
 history = model.fit(
     X_train, y_train,
     validation_data=(X_test, y_test),
@@ -104,15 +100,12 @@ history = model.fit(
     verbose=1
 )
 
-# ======================
-# 5. Avaliação
-# ======================
+
+# Avaliação
 loss, acc = model.evaluate(X_test, y_test, verbose=0)
 print(f"\nAcurácia no conjunto de teste: {acc:.2f}")
 
-# ======================
-# 6. Gráficos de Treinamento
-# ======================
+# Gráficos de Treinamento
 plt.figure(figsize=(12, 5))
 
 # Loss
@@ -136,10 +129,8 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-# ======================
-# 7. Matriz de Confusão e Relatório de Classificação
-# ======================
 
+# Matriz de Confusão e Relatório de Classificação
 # Fazer previsões no conjunto de teste
 y_pred = model.predict(X_test)
 y_pred_classes = np.argmax(y_pred, axis=1)
@@ -150,12 +141,12 @@ class_names = label_encoder.classes_
 
 # Gerar o relatório de classificação
 print("\nRelatório de Classificação:")
-# Adicione o parâmetro 'labels' para informar todas as classes possíveis
+
 print(classification_report(
     y_true,
     y_pred_classes,
     target_names=class_names,
-    labels=np.arange(len(class_names))  # Esta é a parte nova!
+    labels=np.arange(len(class_names))  
 ))
 
 # Gerar a matriz de confusão
@@ -170,16 +161,14 @@ plt.ylabel('Classe Verdadeira')
 plt.xlabel('Classe Prevista')
 plt.show()
 
-# ======================
-# 8. Salvar o Modelo
-# ======================
+
+# Salvar o Modelo
 model.save("modelo_dieta_dinossauros.h5")
 print("\nModelo salvo com sucesso!")
 
 
-# ======================
-# 9. Previsão com Novos Dados
-# ======================
+
+# Previsão com Novos Dados
 
 # Criar um DataFrame com um novo dinossauro (exemplo)
 novo_dino = pd.DataFrame({
