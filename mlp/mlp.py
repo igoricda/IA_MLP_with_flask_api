@@ -127,7 +127,7 @@ plt.ylabel("Acurácia")
 plt.legend()
 
 plt.tight_layout()
-plt.show()
+plt.savefig("training_history.png")
 
 
 # Matriz de Confusão e Relatório de Classificação
@@ -159,7 +159,8 @@ sns.heatmap(conf_matrix, annot=True, fmt='d', cmap='Blues',
 plt.title('Matriz de Confusão')
 plt.ylabel('Classe Verdadeira')
 plt.xlabel('Classe Prevista')
-plt.show()
+#plt.show()
+plt.savefig("confusion_matrix.png")
 
 
 # Salvar o Modelo
